@@ -9,11 +9,12 @@
 </head>
 <body>
 
+
   <div class="container">
     <form action="" method="POST" style="width:50%;">
-    <h1>Lab 4 PHP</h1>
+    <h1>Edit Your Data</h1>
     <?php
-      @include 'config.php';
+        @include 'config.php';
      $emailErr = '';
       $nameErr = '';
       $groupErr = '';
@@ -145,38 +146,48 @@
               <input type="checkbox" class="form-check-input" id="exampleCheck1">
               <label class="form-check-label" for="exampleCheck1">Agree</label>
     </div>
-              <input type="submit" name="submit" value="Submit" class="btn btn-primary ">
-</form>
+    <form method="post" action="edit.php">
+        <input type="hidden" name="editId" value="<?php echo $editId; ?>">
+
+
+        <input type="submit" name="update" value="Update" class="btn btn-primary">
+    </form></form>
 </div>
-<!-- PHP Code -->
-<div class="container mt-5">
 <?php
-if(isset($_REQUEST['submit'])) {
-$name = $_REQUEST["username"];
-$email = $_REQUEST["email"];
-$group = $_REQUEST["group"];
-$classDetails = $_REQUEST["class-details"];
+if(isset($_REQUEST['update'])) {
+    $updateId = $_POST["editId"];
+    $name = $_POST["username"];
+    $email = $_POST["email"];
+    $group = $_POST["group"];
+    $classDetails = $_POST["class-details"];
 
-if (!empty($name) && !empty($email) && !empty($group) && !empty($classDetails)) {
-    $radio = isset($_POST['radio']) ? $_POST['radio'] : '';
-    $selectedCourses = isset($_POST['courses']) ? $_POST['courses'] : [];
-    $coursesString = implode(",", $selectedCourses);
-   // Insert query with the same id
-$sqldata = "INSERT INTO form (id, username, email, group_no, class_details, gender, course) 
-VALUES ('$editId', '$name', '$email', '$group', '$classDetails', '$radio', '$coursesString')"; 
+  
+    if (!empty($name) && !empty($email) && !empty($group) && !empty($classDetails)) {
+        $radio = isset($_POST['radio']) ? $_POST['radio'] : '';
+        $selectedCourses = isset($_POST['courses']) ? $_POST['courses'] : [];
+        $coursesString = implode(",", $selectedCourses);
 
-// Execute the query
-$result = mysqli_query($link, $sqldata);
+        // Update query for the existing row
+        $updateQuery = "UPDATE form SET 
+                        username='$name', 
+                        email='$email', 
+                        group_no='$group', 
+                        class_details='$classDetails', 
+                        gender='$radio', 
+                        course='$coursesString' 
+                        WHERE id='$updateId'";
 
-if (!$result) {
-die('Error: ' . mysqli_error($link));
-} else {
-header("Location: display-form.php");
-exit();
-}
-}
+        // Execute the query
+        $updateResult = mysqli_query($link, $updateQuery);
+
+        if (!$updateResult) {
+            die('Error: ' . mysqli_error($link));
+        } else {
+            header("Location: display-form.php");
+            exit();
+        }
+    }
 }
     ?>
-
 </body>
 </html>

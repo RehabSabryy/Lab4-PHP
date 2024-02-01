@@ -49,10 +49,14 @@
                     <td>{$row['class_details']}</td>
                     <td>{$row['gender']}</td>
                     <td>{$row['course']}</td>
-                     <td>
-                     <form method='post' action='form.php'>
-                        <input type='hidden' name='edit' value='{$row['id']}'>
-                        <input type='submit' value='Edit'>
+                     <td style='display: flex;'>
+                     <form method='post' action='row.php'>
+                        <input type='hidden' name='show' value='{$row['id']}'>
+                        <input type='submit' value='Show'>
+                        </form>
+                        <form method='post' action='edit.php'>
+                            <input type='hidden' name='edit' value='{$row['id']}'>
+                            <input type='submit' value='Edit'>
                         </form>
                      <form method='post'>
                      <input type='hidden' name='delete' value='{$row['id']}'>
@@ -63,6 +67,9 @@
         }
 
         echo "</table>";
+        echo "<button style='margin-top: 10px; background-color: #ff2a1b;
+       padding: 10px 20px;
+        border-color: transparent;'><a style='color: white;' href='form.php'>Add New User</a></button>";
     } else {
         echo "No data found.";
     }
